@@ -88,7 +88,7 @@ const tabs = ref<TabsItem[]>([
   {label: '8ч', value: 8},
   {label: '16ч', value: 16}
 ])
-const activeTab = ref<number>(8)
+const activeTab = ref<number>(16)
 
 const {data: graphInfo, error} = await useFetch(`http://localhost:8888/api/v1/activity`, {
   method: 'GET',
@@ -113,7 +113,7 @@ console.log(graphInfo.value)
       <template #default>
         <div>
           <LineChart
-              :data="data"
+              :data="graphInfo.hourly_clicks"
               :height="322"
               :legend-poisition="'Bottom'"
               :categories="categories"

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import percentile from "percentile";
 
+definePageMeta({
+  name: 'engagement',
+})
+
 const {data} = useFetch(`http://localhost:8888/api/v1/predict-best-time`, {
   default: () => ({
     day_stats: [],

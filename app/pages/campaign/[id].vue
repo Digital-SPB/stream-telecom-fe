@@ -28,54 +28,41 @@ const filteredData = computed(() => graphInfo.value.hourly_clicks.filter((item, 
 const xFormatter = (i: number) => filteredData.value[i]?.hour
 
 
-interface AreaChartItem {
-  date: string
-  clickCount: number
-  percentage: number
-}
-
 const barCategories: Record<string, BulletLegendItemInterface> = {
-  clickCount: {name: 'Переходы'},
-}
-
-const BarChartData: AreaChartItem[] = [
-  {date: '2024-04-01', clickCount: 222, percentage: 5},
-  {date: '2024-04-02', clickCount: 180, percentage: 2},
-  {date: '2024-04-03', clickCount: 167, percentage: 9},
-  {date: '2024-04-04', clickCount: 172, percentage: 8},
-  {date: '2024-04-05', clickCount: 184, percentage: 2},
-  {date: '2024-04-06', clickCount: 195, percentage: 6},
-  {date: '2024-04-07', clickCount: 198, percentage: 4},
-  {date: '2024-04-08', clickCount: 205, percentage: 9},
-  {date: '2024-04-09', clickCount: 210, percentage: 1},
-  {date: '2024-04-10', clickCount: 219, percentage: 7},
-  {date: '2024-04-11', clickCount: 224, percentage: 3},
-  {date: '2024-04-12', clickCount: 230, percentage: 0},
-]
-
-const xBarFormatter = (i: number): string | number => {
-  if (!BarChartData[i]?.date) {
-    return ''
-  }
-  const date = new Date(BarChartData[i]?.date)
-  return `${date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-  })}`
+  clicks_count: {name: 'Клики', color: '#6aa1fd'},
+  percentage: {name: '%', color: '#fa3e76'}
 }
 
 const timeTabs = ref<TabsItem[]>([
   {label: 'Дни', value: 1},
   {label: 'Месяцы', value: 2},
 ])
-const activeTimeTab = ref<number>(1)
+const activeTimeTab = ref<number>(2)
 const formatTabs = ref<TabsItem[]>([
   {label: '123', value: 1},
   {label: '%', value: 2},
 ])
 const activeFormatTab = ref<number>(1)
 
+const {data} = useFetch(`http://localhost:8888/api/v1/click-dynamic/` + route.params.id, {
+  default: () => ({
+    daily_stats: [],
+    monthly_stats: []
+  }),
+  lazy: true,
+  immediate: true,
+  method: 'GET',
+})
 
+const monthFormatter = new Intl.DateTimeFormat('ru-RU', {
+  month: 'long'
+})
+const dayFormatter = new Intl.DateTimeFormat('ru-RU', {
+  day: 'numeric'
+})
+const xBarMonthFormatter = (i: number): string | number => monthFormatter.format(data.value?.monthly_stats.month)
+
+const xBarDayFormatter = (i: number): string | number => dayFormatter.format(data.value?.daily_stats.date)
 
 
 </script>
@@ -113,21 +100,62 @@ const activeFormatTab = ref<number>(1)
       <template #default>
         <div>
           <BarChart
-              :data="BarChartData"
+              v-if="activeTimeTab === 2 && activeFormatTab === 1"
+              :data="data.monthly_stats"
               :height="322"
               :categories="barCategories"
-              :y-axis="['clickCount']"
+              :y-axis="['clicks_count']"
               :group-padding="0"
               :bar-padding="0.2"
               :yNumTicks="4"
-              :x-formatter="xBarFormatter"
+              :x-formatter="xBarMonthFormatter"
               :legend-position="LegendPosition.Bottom"
           />
+          <BarChart
+              v-if="activeTimeTab === 2 && activeFormatTab === 2"
+              :data="data.monthly_stats"
+              :height="322"
+              :categories="barCategories"
+              :y-axis="['percentage']"
+              :group-padding="0"
+              :bar-padding="0.2"
+              :yNumTicks="4"
+              :x-formatter="xBarMonthFormatter"
+              :legend-position="LegendPosition.Bottom"
+          />
+          <BarChart
+              v-if="activeTimeTab === 1 && activeFormatTab === 1"
+              :data="data.daily_stats"
+              :height="322"
+              :categories="barCategories"
+              :y-axis="['clicks_count']"
+              :group-padding="0"
+              :bar-padding="0.2"
+              :yNumTicks="4"
+              :x-formatter="xBarDayFormatter"
+              :legend-position="LegendPosition.Bottom"
+          />
+          <BarChart
+              v-if="activeTimeTab === 1 && activeFormatTab === 2"
+              :data="data.daily_stats"
+              :height="322"
+              :categories="barCategories"
+              :y-axis="['percentage']"
+              :group-padding="0"
+              :bar-padding="0.2"
+              :yNumTicks="4"
+              :x-formatter="xBarDayFormatter"
+              :legend-position="LegendPosition.Bottom"
+          />
+
           <div class="flex justify-between">
             <UTabs v-model="activeTimeTab" color="info" :content="false" :items="timeTabs" size="md" class="w-sm"/>
             <UTabs v-model="activeFormatTab" color="info" :content="false" :items="formatTabs" size="md" class="w-sm"/>
           </div>
         </div>
+      </template>
+      <template #footer>
+        {{ data.monthly_stats }}
       </template>
     </UCard>
   </UContainer>

@@ -4,16 +4,21 @@ definePageMeta({
 })
 
 const navigationItems = ref<NavigationMenuItem[]>([
-    {
-      label: 'Активность пользователей',
-      icon: 'i-lucide-book-open',
-      to: { name: 'campaign.activity' }
-    },
-    {
-      label: 'Динамика кликов',
-      icon: 'i-lucide-database',
-      to: { name: 'campaign.click-dynamics' }
-    },
+  {
+    label: 'Активность пользователей',
+    icon: 'i-lucide-book-open',
+    to: {name: 'campaign.activity'}
+  },
+  {
+    label: 'Динамика кликов',
+    icon: 'i-lucide-database',
+    to: {name: 'campaign.click-dynamics'}
+  },
+  {
+    label: 'Скорость реакции клиентов',
+    icon: 'i-lucide-gauge',
+    to: { name: 'campaign.reaction-time'}
+  },
 ])
 </script>
 
@@ -24,6 +29,6 @@ const navigationItems = ref<NavigationMenuItem[]>([
         color="primary"
         :items="navigationItems"
     />
-    <NuxtPage />
+    <NuxtPage/>
   </UContainer>
 </template>

@@ -20,17 +20,19 @@ const dayFormatter = new Intl.DateTimeFormat('ru-RU', {
   day: 'numeric',
   month: 'short'
 })
-const xFormatter = (i: number) => dayFormatter.format(Date.parse(data.value[i]?.date))
+const xFormatter = (i: number) => dayFormatter.format(Date.parse(data.value[i]?.date ?? new Date()))
 
-const period = ref({start: new CalendarDate(2024, 4, 24), end: new CalendarDate(2025, 1, 1)})
+const period = reactive({start: new CalendarDate(2024, 4, 24), end: new CalendarDate(2025, 1, 1)})
 const intervalType = computed(() => activeTab.value === 1 ? 'day' : 'month')
 const {data} = useFetch(`http://localhost:8888/api/v1/create-campaign-dynamic`, {
   default: () => ([]),
+  watch: ([period.start, period.end, intervalType]),
+  deep: true,
   method: 'GET',
   query: {
-    interval_type: intervalType.value,
-    start_time: String(period.value.start),
-    end_time: String(period.value.end),
+    interval_type: intervalType,
+    start_time: period.start.toString(),
+    end_time: period.end.toString(),
   }
 })
 
@@ -43,14 +45,14 @@ const {data} = useFetch(`http://localhost:8888/api/v1/create-campaign-dynamic`, 
         <div class="flex justify-between items-center">
           <p class="font-semibold">Динамика создания кампаний</p>
           <UPopover>
-            <UButton label="Выберите период" color="info" variant="soft"/>
+            <UButton label="Выберите период" color="info" size="md" variant="soft"/>
 
             <template #content>
               <UCalendar v-model="period" range class="p-4"/>
             </template>
           </UPopover>
 
-          <UTabs v-model="activeTab" color="info" :content="false" :items="tabs" size="md" class="w-md"/>
+          <UTabs v-model="activeTab" color="info" :content="false" :items="tabs" size="sm" class="w-sm"/>
         </div>
       </template>
       <template #default>

@@ -1,24 +1,30 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+    devtools: {enabled: true},
 
-  modules: [
-    '@nuxt/ui',
-    '@nuxt/eslint',
-    "nuxt-charts",
-    'nuxt-svgo',
-    '@vueuse/nuxt'
-  ],
+    modules: [
+        '@nuxt/ui',
+        '@nuxt/eslint',
+        "nuxt-charts",
+        'nuxt-svgo',
+        '@vueuse/nuxt',
+        'nuxt-echarts'
+    ],
 
-  css: ['~/assets/css/main.css'],
+    echarts: {
+        charts: ['HeatmapChart'],
+        components: ['DatasetComponent', 'GridComponent', 'TooltipComponent', 'VisualMapComponent', 'VisualMapPiecewiseComponent', 'VisualMapContinuousComponent'],
+    },
 
-  svgo: {
-    defaultImport: 'component',
-  },
+    css: ['~/assets/css/main.css'],
 
-  future: {
-    compatibilityVersion: 4
-  },
+    svgo: {
+        defaultImport: 'component',
+    },
 
-  compatibilityDate: '2024-11-27'
+    future: {
+        compatibilityVersion: 4
+    },
+
+    compatibilityDate: '2024-11-27'
 })

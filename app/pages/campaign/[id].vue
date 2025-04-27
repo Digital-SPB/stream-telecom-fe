@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  name: 'campaign'
+  name: 'campaign',
+  redirect: {name: 'campaign.activity'}
 })
 
 const navigationItems = ref<NavigationMenuItem[]>([
@@ -23,12 +24,12 @@ const navigationItems = ref<NavigationMenuItem[]>([
 </script>
 
 <template>
-  <UContainer class="flex flex-col gap-y-6 justify-center max-w-5xl py-8">
+  <div class="flex flex-col gap-y-6 justify-center">
     <UNavigationMenu
         orientation="horizontal"
         color="primary"
         :items="navigationItems"
     />
     <NuxtPage/>
-  </UContainer>
+  </div>
 </template>

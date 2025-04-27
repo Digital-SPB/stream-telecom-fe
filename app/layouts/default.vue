@@ -9,7 +9,9 @@ import LogoSolidTeam from '~/assets/img/solid_team_logo.svg'
       <h1 class="text-4xl font-black">Аналитика рекламных кампаний</h1>
     </header>
     <main>
+      <UContainer class="max-w-5xl py-8">
       <slot/>
+      </UContainer>
     </main>
     <footer class="pt-6 pb-10 flex justify-center items-center gap-4">
       Сделано с любовью командой

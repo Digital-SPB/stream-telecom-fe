@@ -2,13 +2,13 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  modules: [
-    '@nuxt/ui',
-    '@nuxt/eslint',
-    "nuxt-charts"
-  ],
+  modules: ['@nuxt/ui', '@nuxt/eslint', "nuxt-charts", 'nuxt-svgo'],
 
   css: ['~/assets/css/main.css'],
+
+  svgo: {
+    defaultImport: 'component',
+  },
 
   future: {
     compatibilityVersion: 4

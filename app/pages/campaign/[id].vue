@@ -53,16 +53,18 @@ const {data} = useFetch(`http://localhost:8888/api/v1/click-dynamic/` + route.pa
   immediate: true,
   method: 'GET',
 })
-
+const monthlyData = computed(() => data.value.monthly_stats)
+const dailyData = computed(() => data.value.daily_stats)
 const monthFormatter = new Intl.DateTimeFormat('ru-RU', {
   month: 'long'
 })
 const dayFormatter = new Intl.DateTimeFormat('ru-RU', {
-  day: 'numeric'
+  day: 'numeric',
+  month: 'short'
 })
-const xBarMonthFormatter = (i: number): string | number => monthFormatter.format(data.value?.monthly_stats.month)
+const xBarMonthFormatter = (i: number): string | number => monthFormatter.format(Date.parse(monthlyData.value[i].month))
 
-const xBarDayFormatter = (i: number): string | number => dayFormatter.format(data.value?.daily_stats.date)
+const xBarDayFormatter = (i) => dayFormatter.format(Date.parse(dailyData.value[i].date))
 
 
 </script>
@@ -101,7 +103,7 @@ const xBarDayFormatter = (i: number): string | number => dayFormatter.format(dat
         <div>
           <BarChart
               v-if="activeTimeTab === 2 && activeFormatTab === 1"
-              :data="data.monthly_stats"
+              :data="monthlyData"
               :height="322"
               :categories="barCategories"
               :y-axis="['clicks_count']"
@@ -113,7 +115,7 @@ const xBarDayFormatter = (i: number): string | number => dayFormatter.format(dat
           />
           <BarChart
               v-if="activeTimeTab === 2 && activeFormatTab === 2"
-              :data="data.monthly_stats"
+              :data="monthlyData"
               :height="322"
               :categories="barCategories"
               :y-axis="['percentage']"
@@ -125,7 +127,7 @@ const xBarDayFormatter = (i: number): string | number => dayFormatter.format(dat
           />
           <BarChart
               v-if="activeTimeTab === 1 && activeFormatTab === 1"
-              :data="data.daily_stats"
+              :data="dailyData"
               :height="322"
               :categories="barCategories"
               :y-axis="['clicks_count']"
@@ -137,7 +139,7 @@ const xBarDayFormatter = (i: number): string | number => dayFormatter.format(dat
           />
           <BarChart
               v-if="activeTimeTab === 1 && activeFormatTab === 2"
-              :data="data.daily_stats"
+              :data="dailyData"
               :height="322"
               :categories="barCategories"
               :y-axis="['percentage']"
@@ -155,7 +157,7 @@ const xBarDayFormatter = (i: number): string | number => dayFormatter.format(dat
         </div>
       </template>
       <template #footer>
-        {{ data.monthly_stats }}
+        <p class="font-semibold">Всего кликов: {{data.total_clicks}}</p>
       </template>
     </UCard>
   </UContainer>

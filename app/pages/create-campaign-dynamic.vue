@@ -20,21 +20,21 @@ const dayFormatter = new Intl.DateTimeFormat('ru-RU', {
   day: 'numeric',
   month: 'short'
 })
-const xFormatter = (i: number) => dayFormatter.format(Date.parse(data.value[i]?.date ?? new Date()))
-
-const period = reactive({start: new CalendarDate(2024, 4, 24), end: new CalendarDate(2025, 1, 1)})
+const period = ref({start: new CalendarDate(2024, 4, 24), end: new CalendarDate(2025, 1, 1)})
+const periodStart = computed(() => period.value.start?.toString())
+const periodEnd = computed(() => period.value.end?.toString())
 const intervalType = computed(() => activeTab.value === 1 ? 'day' : 'month')
 const {data} = useFetch(`http://localhost:8888/api/v1/create-campaign-dynamic`, {
   default: () => ([]),
-  watch: ([period.start, period.end, intervalType]),
-  deep: true,
+  watch: [periodStart, periodEnd, intervalType],
   method: 'GET',
   query: {
     interval_type: intervalType,
-    start_time: period.start.toString(),
-    end_time: period.end.toString(),
+    start_time: periodStart,
+    end_time: periodEnd,
   }
 })
+const xFormatter = (i: number) => dayFormatter.format(Date.parse(data.value[i]?.date ?? new Date()))
 
 </script>
 

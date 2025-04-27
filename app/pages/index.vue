@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import {useRouteQuery} from "@vueuse/router";
 
-const page = ref<number>(1)
+const page = useRouteQuery('page', '1', { transform: Number })
 const perPage = 20
 
 const {data} = useFetch(`http://localhost:8888/api/v1/campaigns`, {

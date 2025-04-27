@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import {useRouteQuery} from "@vueuse/router";
+definePageMeta({
+  name: 'home'
+})
 
 const page = useRouteQuery('page', '1', { transform: Number })
 const perPage = 20

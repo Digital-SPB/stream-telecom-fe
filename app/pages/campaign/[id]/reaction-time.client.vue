@@ -20,12 +20,12 @@ const {data} = useFetch(`http://localhost:8888/api/v1/reaction-time`, {
   method: 'GET',
 })
 const durFormatter = new Intl.DurationFormat("ru-RU")
-const averageTime = computed(()=>data.value.average_time ? durFormatter.format(data.value.average_time) : '')
-const medianTime = computed(()=>data.value.median_time ? durFormatter.format(data.value.median_time) : '')
-const minTime = computed(()=>data.value.min_time ? durFormatter.format(data.value.min_time) : '')
-const maxTime = computed(()=>data.value.max_time ? durFormatter.format(data.value.max_time) : '')
-const percentile90th = computed(()=>data.value.percentile_90th ? durFormatter.format(data.value.percentile_90th) : '')
-const percentile95th = computed(()=>data.value.percentile_95th ? durFormatter.format(data.value.percentile_95th) : '')
+const averageTime = computed(()=>data.value.average_time ? durFormatter.format(data.value.average_time) : '0')
+const medianTime = computed(()=>data.value.median_time ? durFormatter.format(data.value.median_time) : '0')
+const minTime = computed(()=>data.value.min_time ? durFormatter.format(data.value.min_time) : '0')
+const maxTime = computed(()=>data.value.max_time ? durFormatter.format(data.value.max_time) : '0')
+const percentile90th = computed(()=>data.value.percentile_90th ? durFormatter.format(data.value.percentile_90th) : '0')
+const percentile95th = computed(()=>data.value.percentile_95th ? durFormatter.format(data.value.percentile_95th) : '0')
 </script>
 
 <template>

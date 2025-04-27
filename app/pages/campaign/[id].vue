@@ -6,9 +6,14 @@ definePageMeta({
 
 const navigationItems = ref<NavigationMenuItem[]>([
   {
+    label: 'Все кампании',
+    icon: 'i-lucide-layout-list',
+    to: { name: 'home'}
+  },
+  {
     label: 'Активность пользователей',
     icon: 'i-lucide-book-open',
-    to: {name: 'campaign.activity'}
+    to: {name: 'campaign.activity'},
   },
   {
     label: 'Динамика кликов',
